@@ -1,28 +1,18 @@
 #!/usr/bin/python3
-"""Test script for BaseModel"""
+"""Test save method of BaseModel"""
 
 import sys
 import os
+import time
+from datetime import datetime
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from models.base_model import BaseModel
 
-# Create an instance of BaseModel
 my_model = BaseModel()
-my_model.name = "My First Model"
-my_model.my_number = 89
+old_updated_at = my_model.updated_at
 
-# Print instance
-print(my_model)
-
-# Save the instance
+time.sleep(0.01)
 my_model.save()
-print(my_model)
 
-# Convert to dict and print
-my_model_json = my_model.to_dict()
-print(my_model_json)
-
-print("JSON of my_model:")
-for key in my_model_json.keys():
-    print("\t{}: ({}) - {}".format(key, type(my_model_json[key]), my_model_json[key]))
+if my_model.updated_at > old_updated_at:
+    print("OK")

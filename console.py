@@ -18,8 +18,8 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
-        """Do nothing on empty input line"""
-        pass
+        """Do nothing on empty input line (including lines with spaces)"""
+        return False
 
 
 if __name__ == '__main__':

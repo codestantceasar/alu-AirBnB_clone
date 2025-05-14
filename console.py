@@ -1,22 +1,24 @@
 #!/usr/bin/python3
+"""Entry point of the command interpreter"""
 
 import cmd
 
 
 class HBNBCommand(cmd.Cmd):
-    prompt = '(hbnb) '
+    """Command interpreter for HBNB"""
+    prompt = "(hbnb) "
+
+    def do_quit(self, arg):
+        """Quit command to exit the program"""
+        return True
 
     def do_EOF(self, arg):
-        """Exit the program when EOF is reached (Ctrl+D)"""
+        """EOF (Ctrl+D) to exit the program"""
         print()
         return True
 
-    def do_quit(self, arg):
-        """Exit the program"""
-        return True
-
     def emptyline(self):
-        """Do nothing when the line is empty"""
+        """Do nothing on empty input line"""
         pass
 
 

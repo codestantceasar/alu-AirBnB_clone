@@ -1,25 +1,6 @@
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
-
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
-
-    # Add all classes to this dictionary
-    classes = {
-        "BaseModel": BaseModel,
-        "User": User,
-        "Place": Place,
-        "State": State,
-        "City": City,
-        "Amenity": Amenity,
-        "Review": Review
-    }
 
     def all(self):
         return self.__objects
@@ -35,12 +16,30 @@ class FileStorage:
 
     def reload(self):
         from json import load
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
+        classes = {
+            "BaseModel": BaseModel,
+            "User": User,
+            "Place": Place,
+            "State": State,
+            "City": City,
+            "Amenity": Amenity,
+            "Review": Review
+        }
+
         try:
             with open(self.__file_path, "r") as f:
                 obj_dict = load(f)
             for key, value in obj_dict.items():
                 cls_name = value["__class__"]
-                cls = self.classes.get(cls_name)
+                cls = classes.get(cls_name)
                 if cls:
                     self.__objects[key] = cls(**value)
         except FileNotFoundError:

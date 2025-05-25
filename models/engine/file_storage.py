@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 import json
-from models.base_model import BaseModel
 import os
-
+from models.base_model import BaseModel
 
 class FileStorage:
+    """Serializes instances to a JSON file and deserializes back to instances"""
+
     __file_path = "file.json"
     __objects = {}
 
@@ -19,18 +20,18 @@ class FileStorage:
 
     def save(self):
         """Serializes __objects to the JSON file"""
-        json_dict = {key: obj.to_dict() for key, obj in FileStorage.__objects.items()}
+        obj_dict = {key: obj.to_dict() for key, obj in FileStorage.__objects.items()}
         with open(FileStorage.__file_path, 'w') as f:
-            json.dump(json_dict, f)
+            json.dump(obj_dict, f)
 
     def reload(self):
-        """Deserializes the JSON file to __objects"""
-        try:
-            with open(FileStorage.__file_path, 'r') as f:
-                obj_dict = json.load(f)
-                for key, val in obj_dict.items():
-                    cls_name = val["__class__"]
-                    if cls_name == "BaseModel":
-                        FileStorage.__objects[key] = BaseModel(**val)
-        except FileNotFoundError:
-            pass
+        """Deserializes the JSON file to __objects (if it exists)"""
+        if not os.path.exists(FileStorage.__file_path):
+            return
+
+        with open(FileStorage.__file_path, 'r') as f:
+            obj_dict = json.load(f)
+            for key, value in obj_dict.items():
+                class_name = value['__class__']
+                if class_name == "BaseModel":
+                    FileStorage.__objects[key] = BaseModel(**value)
